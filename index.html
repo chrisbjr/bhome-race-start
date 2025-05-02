@@ -72,7 +72,7 @@
 </div>
 <button id="startButton" onclick="startSequence()">Start</button>
 <div id="reactionTime"></div>
-<div id="tapArea" onclick="registerReaction()"></div>
+<div id="tapArea" onclick="registerReaction()" ontouchstart="registerReaction()"></div>
 
 <script>
   const lights = document.querySelectorAll('.light');
