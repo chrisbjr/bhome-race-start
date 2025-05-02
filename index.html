@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Race Start Reaction Timer</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #111;
+      color: #fff;
+      position: relative;
+    }
+    .lights {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      z-index: 2;
+    }
+    .light {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #440000;
+      border: 2px solid #ff0000;
+    }
+    .light.on {
+      background-color: red;
+    }
+    button, #reactionTime {
+      margin-top: 20px;
+      font-size: 18px;
+      padding: 10px 20px;
+      z-index: 2;
+    }
+    #tapArea {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+<h1 style="z-index: 2;">Race Start Reaction Timer</h1>
+<div class="lights" id="lights">
+  <div class="light"></div>
+  <div class="light"></div>
+  <div class="light"></div>
+  <div class="light"></div>
+  <div class="light"></div>
+</div>
+<button id="startButton" onclick="startSequence()">Start</button>
+<div id="reactionTime"></div>
+<div id="tapArea" onclick="registerReaction()"></div>
+
+<script>
+  const lights = document.querySelectorAll('.light');
+  const startButton = document.getElementById('startButton');
+  let startTime = 0;
+  let waitingForTap = false;
+
+  function startSequence() {
+    startButton.style.display = 'none';
+    lights.forEach(l => l.classList.remove('on'));
+    document.getElementById('reactionTime').textContent = '';
+    waitingForTap = false;
+
+    let delay = 1000;
+    lights.forEach((light, i) => {
+      setTimeout(() => {
+        light.classList.add('on');
+      }, i * delay);
+    });
+
+    setTimeout(() => {
+      lights.forEach(l => l.classList.remove('on'));
+      startTime = performance.now();
+      waitingForTap = true;
+    }, lights.length * delay + Math.random() * 2000 + 1000); // Randomize light out
+  }
+
+  function registerReaction() {
+    if (waitingForTap) {
+      const reaction = performance.now() - startTime;
+      document.getElementById('reactionTime').textContent = `Reaction Time: ${reaction.toFixed(0)} ms`;
+      waitingForTap = false;
+      startButton.style.display = 'inline-block';
+    }
+  }
+</script>
+</body>
+</html>

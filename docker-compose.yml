@@ -1,0 +1,7 @@
+services:
+  reaction-timer:
+    build: .
+    container_name: reaction-timer
+    ports:
+      - "${PORT:-8080}:80"
+    restart: unless-stopped
