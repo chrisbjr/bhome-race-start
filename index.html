@@ -113,7 +113,7 @@
   function registerReaction() {
     if (waitingForTap) {
       const reaction = performance.now() - startTime;
-      document.getElementById('reactionTime').textContent = `Reaction Time: ${reaction.toFixed(0)} ms`;
+      document.getElementById('reactionTime').textContent = `✅ Reaction Time: ${reaction.toFixed(0)} ms`;
       waitingForTap = false;
 
       // Optional: vibrate on tap
