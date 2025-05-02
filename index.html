@@ -138,7 +138,9 @@
       if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
       gameActive = false;
       throttleButton.style.display = 'none';
-      startButton.style.display = 'inline-block';
+      setTimeout(() => {
+        startButton.style.display = 'inline-block';
+      }, 1000);
       return;
     }
 
@@ -149,7 +151,9 @@
     gameActive = false;
     lightsOut = false;
     throttleButton.style.display = 'none';
-    startButton.style.display = 'inline-block';
+    setTimeout(() => {
+      startButton.style.display = 'inline-block';
+    }, 1000);
   }
 </script>
 </body>
