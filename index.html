@@ -79,34 +79,52 @@
   const startButton = document.getElementById('startButton');
   let startTime = 0;
   let waitingForTap = false;
+  let raceStarted = false;
 
-  function startSequence() {
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function startSequence() {
     startButton.style.display = 'none';
     lights.forEach(l => l.classList.remove('on'));
     document.getElementById('reactionTime').textContent = '';
-    waitingForTap = false;
+    waitingForTap = true;
+    raceStarted = false;
 
-    let delay = 1000;
-    lights.forEach((light, i) => {
-      setTimeout(() => {
-        light.classList.add('on');
-      }, i * delay);
-    });
+    // Turn on lights one by one
+    for (let i = 0; i < lights.length; i++) {
+      await sleep(1000);
+      lights[i].classList.add('on');
+    }
 
-    setTimeout(() => {
-      lights.forEach(l => l.classList.remove('on'));
-      startTime = performance.now();
-      waitingForTap = true;
-    }, lights.length * delay + Math.random() * 2000 + 1000);
+    // Wait random time before lights go out
+    await sleep(1000 + Math.random() * 2000);
+
+    // Lights out = GO!
+    lights.forEach(l => l.classList.remove('on'));
+    if (navigator.vibrate) navigator.vibrate(100);
+    startTime = performance.now();
+    raceStarted = true;
   }
 
   function registerReaction() {
-    if (waitingForTap) {
-      const reaction = performance.now() - startTime;
-      document.getElementById('reactionTime').textContent = `Reaction Time: ${reaction.toFixed(0)} ms`;
+    if (!waitingForTap) return;
+
+    if (!raceStarted) {
+      document.getElementById('reactionTime').textContent = '❌ False Start!';
+      if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
       waitingForTap = false;
       startButton.style.display = 'inline-block';
+      return;
     }
+
+    const reaction = performance.now() - startTime;
+    document.getElementById('reactionTime').textContent = `✅ Reaction Time: ${reaction.toFixed(0)} ms`;
+    if (navigator.vibrate) navigator.vibrate(50);
+    waitingForTap = false;
+    raceStarted = false;
+    startButton.style.display = 'inline-block';
   }
 </script>
 </body>
