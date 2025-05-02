@@ -9,8 +9,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-      height: 100vh;
+      justify-content: flex-start;
+      min-height: 100vh;
       margin: 0;
       font-family: sans-serif;
       background-color: #111;
@@ -25,6 +25,7 @@
       display: flex;
       gap: 3vw;
       margin-top: 4vh;
+      margin-bottom: 4vh;
       z-index: 2;
     }
 
@@ -44,25 +45,27 @@
       background-color: red;
     }
 
-    button, #reactionTime {
+    button {
       font-size: 4vw;
       padding: 2vh 4vw;
       max-width: 90vw;
       z-index: 2;
+      margin-top: 1vh;
     }
 
     #reactionTime {
+      font-size: 5vw;
       margin-top: 2vh;
+      z-index: 2;
     }
 
     #throttleButton {
       font-size: 6vw;
-      padding: 4vh 10vw;
+      padding: 3vh 8vw;
       background-color: #222;
       color: #0f0;
       border: 2px solid #0f0;
       border-radius: 1em;
-      margin-bottom: 4vh;
       z-index: 2;
       display: none;
     }
@@ -75,6 +78,7 @@
 </head>
 <body>
 <h1 style="z-index: 2; font-size: 6vw;">Race Start Reaction Timer</h1>
+
 <div class="lights" id="lights">
   <div class="light"></div>
   <div class="light"></div>
@@ -82,9 +86,11 @@
   <div class="light"></div>
   <div class="light"></div>
 </div>
-<button id="startButton" onclick="startSequence()">Start</button>
-<div id="reactionTime"></div>
+
 <button id="throttleButton" onclick="registerReaction()" ontouchstart="registerReaction()">Throttle</button>
+
+<div id="reactionTime"></div>
+<button id="startButton" onclick="startSequence()">Start</button>
 
 <script>
   const lights = document.querySelectorAll('.light');
@@ -102,7 +108,7 @@
 
   async function startSequence() {
     startButton.style.display = 'none';
-    throttleButton.style.display = 'block'; // ✅ Show throttle button immediately
+    throttleButton.style.display = 'block';
     reactionText.textContent = '';
     lights.forEach(l => l.classList.remove('on'));
 
